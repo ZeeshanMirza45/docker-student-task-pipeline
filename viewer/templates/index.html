@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="10">
+  <title>Student Records</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#162033}.wrap{max-width:1200px;margin:42px auto;padding:0 18px}.head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:20px}h1{margin:0 0 6px}.sub{color:#64748b}.badge{background:#e0e7ff;color:#3730a3;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700}.card{background:#fff;border-radius:18px;overflow:auto;box-shadow:0 12px 40px rgba(22,32,51,.10)}table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:14px 16px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f8fafc;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:#475569}tr:hover td{background:#f8fbff}.cgpa{font-weight:800;color:#166534}.error{background:#fee2e2;color:#991b1b;padding:12px 14px;border-radius:10px;margin-bottom:16px}.empty{padding:36px;text-align:center;color:#64748b}.link{display:inline-block;margin-top:18px;color:#2563eb;text-decoration:none;font-weight:700}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div><h1>Student Records</h1><div class="sub">Student data submitted from the entry form. Page refreshes every 10 seconds.</div></div>
+    <div class="badge">Data source: {{ source }}</div>
+  </div>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  <div class="card">
+    {% if students %}
+    <table>
+      <thead><tr><th>ID</th><th>Roll No</th><th>Name</th><th>Email</th><th>Department</th><th>Semester</th><th>CGPA</th><th>Created</th></tr></thead>
+      <tbody>
+      {% for s in students %}
+      <tr>
+        <td>{{ s.id }}</td><td>{{ s.roll_no }}</td><td>{{ s.name }}</td><td>{{ s.email }}</td><td>{{ s.department }}</td><td>{{ s.semester }}</td><td class="cgpa">{{ '%.2f'|format(s.cgpa) }}</td><td>{{ s.created_at }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}<div class="empty">No student records yet. Add one from the Student Entry form.</div>{% endif %}
+  </div>
+  <a class="link" href="{{ entry_url }}">← Back to Student Entry</a>
+</div>
+</body>
+</html>

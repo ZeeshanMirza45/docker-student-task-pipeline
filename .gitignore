@@ -1,0 +1,9 @@
+mysql-data/*
+!mysql-data/.gitkeep
+.vercel
+.env
+.env.*
+!.env.vercel.example
+__pycache__/
+*.pyc
+.DS_Store

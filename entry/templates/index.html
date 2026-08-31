@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Entry Form</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#162033}.wrap{max-width:780px;margin:42px auto;padding:0 18px}.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 12px 40px rgba(22,32,51,.10)}h1{margin:0 0 8px}.sub{color:#64748b;margin-bottom:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin-bottom:7px}input,select{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;outline:none}input:focus,select:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}button{width:100%;padding:14px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-weight:700;font-size:16px;cursor:pointer}.notice{padding:12px 14px;border-radius:10px;margin-bottom:18px}.ok{background:#dcfce7;color:#166534}.err{background:#fee2e2;color:#991b1b}.links{margin-top:18px;text-align:center}.links a{color:#2563eb;text-decoration:none;font-weight:700}@media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Student Registration</h1>
+      <div class="sub">Enter student data here. It will be stored in MySQL and available on the Student Records page.</div>
+      {% if message %}<div class="notice ok">{{ message }}</div>{% endif %}
+      {% if error %}<div class="notice err">{{ error }}</div>{% endif %}
+      <form method="post">
+        <div class="grid">
+          <div><label>Roll No</label><input name="roll_no" value="{{ form.get('roll_no','') }}" required placeholder="L1S22BSCS0380"></div>
+          <div><label>Student Name</label><input name="name" value="{{ form.get('name','') }}" required placeholder="Student name"></div>
+          <div><label>Email</label><input type="email" name="email" value="{{ form.get('email','') }}" required placeholder="student@example.com"></div>
+          <div><label>Department</label><input name="department" value="{{ form.get('department','') }}" required placeholder="Computer Science"></div>
+          <div><label>Semester</label><input type="number" min="1" max="12" name="semester" value="{{ form.get('semester','') }}" required placeholder="7"></div>
+          <div><label>CGPA</label><input type="number" min="0" max="4" step="0.01" name="cgpa" value="{{ form.get('cgpa','') }}" required placeholder="3.35"></div>
+          <div class="full"><button type="submit">Save Student</button></div>
+        </div>
+      </form>
+      <div class="links"><a href="{{ viewer_url }}">Open Student Records →</a></div>
+    </div>
+  </div>
+</body>
+</html>

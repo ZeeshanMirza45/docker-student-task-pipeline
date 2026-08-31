@@ -1,0 +1,78 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: student_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: studentdb
+      MYSQL_USER: studentuser
+      MYSQL_PASSWORD: studentpass
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - student-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: student_redis
+    restart: unless-stopped
+    networks:
+      - student-net
+
+  api:
+    build: ./api
+    container_name: student_api
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: studentdb
+      DB_USER: studentuser
+      DB_PASSWORD: studentpass
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "5002:5002"
+    networks:
+      - student-net
+
+  entry-form:
+    build: ./entry
+    container_name: student_entry_form
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:5002
+    depends_on:
+      - api
+    ports:
+      - "5000:5000"
+    networks:
+      - student-net
+
+  viewer-form:
+    build: ./viewer
+    container_name: student_viewer_form
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:5002
+    depends_on:
+      - api
+    ports:
+      - "5001:5001"
+    networks:
+      - student-net
+
+networks:
+  student-net:
+    driver: bridge
