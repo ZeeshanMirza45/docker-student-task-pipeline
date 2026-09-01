@@ -162,5 +162,14 @@ def list_students():
 
 
 if __name__ == "__main__":
-    init_db()
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5002")), debug=False)
+    port = int(os.environ.get("PORT", "5002"))
+
+    # Initialize database only if running locally
+    if os.environ.get("VERCEL") != "1":
+        init_db()
+
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
+    )
