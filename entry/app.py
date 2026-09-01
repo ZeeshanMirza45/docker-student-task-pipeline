@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 API_URL = os.getenv("API_URL", "http://api:5002").rstrip("/")
-VIEWER_URL = os.getenv("VIEWER_URL", "https://docker-student-task-pipeline.vercel.app/")
+VIEWER_URL = os.getenv("VIEWER_URL", "/records")
 
 
 @app.route("/", methods=["GET", "POST"])
